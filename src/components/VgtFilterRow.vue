@@ -1,5 +1,6 @@
 <template>
 <tr v-if="hasFilterRow">
+  <th v-if="childrenVisibilityToggle"></th>
   <th v-if="lineNumbers"></th>
   <th v-if="selectable"></th>
   <th class="filter-th"
@@ -58,6 +59,7 @@ export default {
     'globalSearchEnabled',
     'selectable',
     'mode',
+    'childrenVisibilityToggle'
   ],
   watch: {
     columns: {

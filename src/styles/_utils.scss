@@ -35,3 +35,14 @@
 .vgt-text-disabled{
   color: $secondary-text-color;
 }
+
+.vgt-children-visibility-toggle {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 24px;
+}

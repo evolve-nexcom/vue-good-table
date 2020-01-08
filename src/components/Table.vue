@@ -88,6 +88,7 @@
             :searchEnabled="searchEnabled"
             :paginated="paginated"
             :table-ref="$refs.table"
+            :children-visibility-toggle="groupOptions.childrenVisibilityToggle"
           >
             <template
               slot="table-column"
@@ -128,6 +129,7 @@
             :typed-columns="typedColumns"
             :getClasses="getClasses"
             :searchEnabled="searchEnabled"
+            :children-visibility-toggle="groupOptions.childrenVisibilityToggle"
           >
             <template
               slot="table-column"
@@ -161,6 +163,8 @@
               :formatted-row="formattedRow"
               :get-classes="getClasses"
               :full-colspan="fullColspan"
+              :children-visibility-toggle="groupOptions.childrenVisibilityToggle"
+              @childrenVisibilityToggled="childrenVisibilityToggled(index)"
             >
               <template
                 v-if="hasHeaderRowTemplate"
@@ -179,6 +183,7 @@
             <!-- normal rows here. we loop over all rows -->
             <tr
               v-for="(row, index) in headerRow.children"
+              v-show="!groupOptions.childrenVisibilityToggle || (groupOptions.childrenVisibilityToggle && headerRow.childrenVisible)"
               :key="row.originalIndex"
               :class="getRowStyleClass(row)"
               @mouseenter="onMouseenter(row, index)"
@@ -186,6 +191,9 @@
               @dblclick="onRowDoubleClicked(row, index, $event)"
               @click="onRowClicked(row, index, $event)"
               @auxclick="onRowAuxClicked(row, index, $event)">
+              <td v-if="groupOptions.childrenVisibilityToggle">
+
+              </td>
               <th
                 v-if="lineNumbers"
                 class="line-numbers"
@@ -238,6 +246,8 @@
               :formatted-row="formattedRow"
               :get-classes="getClasses"
               :full-colspan="fullColspan"
+              :children-visibility-toggle="groupOptions.childrenVisibilityToggle"
+              @childrenVisibilityToggled="childrenVisibilityToggled(index)"
             >
               <template
                 v-if="hasHeaderRowTemplate"
@@ -347,6 +357,7 @@ export default {
       default() {
         return {
           enabled: false,
+          childrenVisibilityToggle: false
         };
       },
     },
@@ -891,6 +902,9 @@ export default {
   },
 
   methods: {
+    childrenVisibilityToggled(index) {
+      this.filteredRows[index].childrenVisible = !this.filteredRows[index].childrenVisible
+    },
     getColumnForField(field) {
       for (let i = 0; i < this.typedColumns.length; i += 1) {
         if (this.typedColumns[i].field === field) return this.typedColumns[i];

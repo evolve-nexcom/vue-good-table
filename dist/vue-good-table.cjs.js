@@ -8041,7 +8041,7 @@ var VgtGlobalSearch = normalizeComponent_1({
 
 var script$3 = {
   name: 'VgtFilterRow',
-  props: ['lineNumbers', 'columns', 'typedColumns', 'globalSearchEnabled', 'selectable', 'mode'],
+  props: ['lineNumbers', 'columns', 'typedColumns', 'globalSearchEnabled', 'selectable', 'mode', 'childrenVisibilityToggle'],
   watch: {
     columns: {
       handler: function handler(newValue, oldValue) {
@@ -8152,7 +8152,7 @@ var __vue_render__$3 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _vm.hasFilterRow ? _c('tr', [_vm.lineNumbers ? _c('th') : _vm._e(), _vm._v(" "), _vm.selectable ? _c('th') : _vm._e(), _vm._v(" "), _vm._l(_vm.columns, function (column, index) {
+  return _vm.hasFilterRow ? _c('tr', [_vm.childrenVisibilityToggle ? _c('th') : _vm._e(), _vm._v(" "), _vm.lineNumbers ? _c('th') : _vm._e(), _vm._v(" "), _vm.selectable ? _c('th') : _vm._e(), _vm._v(" "), _vm._l(_vm.columns, function (column, index) {
     return !column.hidden ? _c('th', {
       key: index,
       staticClass: "filter-th"
@@ -8231,7 +8231,7 @@ var __vue_staticRenderFns__$3 = [];
 var __vue_inject_styles__$3 = undefined;
 /* scoped */
 
-var __vue_scope_id__$3 = "data-v-836b007c";
+var __vue_scope_id__$3 = "data-v-4c4bcb54";
 /* module identifier */
 
 var __vue_module_identifier__$3 = undefined;
@@ -8352,7 +8352,10 @@ var script$4 = {
       type: Boolean
     },
     tableRef: {},
-    paginated: {}
+    paginated: {},
+    childrenVisibilityToggle: {
+      type: Boolean
+    }
   },
   watch: {
     tableRef: {
@@ -8506,7 +8509,7 @@ var __vue_render__$4 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c('thead', [_c('tr', [_vm.lineNumbers ? _c('th', {
+  return _c('thead', [_c('tr', [_vm.childrenVisibilityToggle ? _c('th') : _vm._e(), _vm._v(" "), _vm.lineNumbers ? _c('th', {
     staticClass: "line-numbers"
   }) : _vm._e(), _vm._v(" "), _vm.selectable ? _c('th', {
     staticClass: "vgt-checkbox-col"
@@ -8543,7 +8546,8 @@ var __vue_render__$4 = function __vue_render__() {
       "selectable": _vm.selectable,
       "columns": _vm.columns,
       "mode": _vm.mode,
-      "typed-columns": _vm.typedColumns
+      "typed-columns": _vm.typedColumns,
+      "children-visibility-toggle": _vm.childrenVisibilityToggle
     },
     on: {
       "filter-changed": _vm.filterRows
@@ -8557,7 +8561,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-13ae5fa3";
+var __vue_scope_id__$4 = "data-v-a2ff6694";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
@@ -8573,6 +8577,15 @@ var VgtTableHeader = normalizeComponent_1({
   staticRenderFns: __vue_staticRenderFns__$4
 }, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8643,13 +8656,20 @@ var script$5 = {
     },
     fullColspan: {
       type: Number
+    },
+    childrenVisibilityToggle: {
+      type: Boolean
     }
   },
   data: function data() {
     return {};
   },
   computed: {},
-  methods: {},
+  methods: {
+    toggleChildrenVisibility: function toggleChildrenVisibility() {
+      this.$emit('childrenVisibilityToggled');
+    }
+  },
   mounted: function mounted() {},
   components: {}
 };
@@ -8665,7 +8685,14 @@ var __vue_render__$5 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c('tr', [_vm.headerRow.mode === 'span' ? _c('th', {
+  return _c('tr', [_vm.childrenVisibilityToggle ? _c('th', {
+    staticClass: "vgt-row-header"
+  }, [_c('button', {
+    staticClass: "vgt-children-visibility-toggle",
+    on: {
+      "click": _vm.toggleChildrenVisibility
+    }
+  }, [_vm._v("\n      " + _vm._s(_vm.headerRow.childrenVisible ? '-' : '+') + "\n    ")])]) : _vm._e(), _vm._v(" "), _vm.headerRow.mode === 'span' ? _c('th', {
     staticClass: "vgt-left-align vgt-row-header",
     attrs: {
       "colspan": _vm.fullColspan
@@ -13460,7 +13487,8 @@ var script$6 = {
     groupOptions: {
       "default": function _default() {
         return {
-          enabled: false
+          enabled: false,
+          childrenVisibilityToggle: false
         };
       }
     },
@@ -13941,6 +13969,9 @@ var script$6 = {
     }
   },
   methods: {
+    childrenVisibilityToggled: function childrenVisibilityToggled(index) {
+      this.filteredRows[index].childrenVisible = !this.filteredRows[index].childrenVisible;
+    },
     getColumnForField: function getColumnForField(field) {
       for (var i = 0; i < this.typedColumns.length; i += 1) {
         if (this.typedColumns[i].field === field) return this.typedColumns[i];
@@ -14609,7 +14640,8 @@ var __vue_render__$6 = function __vue_render__() {
       "getClasses": _vm.getClasses,
       "searchEnabled": _vm.searchEnabled,
       "paginated": _vm.paginated,
-      "table-ref": _vm.$refs.table
+      "table-ref": _vm.$refs.table,
+      "children-visibility-toggle": _vm.groupOptions.childrenVisibilityToggle
     },
     on: {
       "on-toggle-select-all": _vm.toggleSelectAll,
@@ -14645,7 +14677,8 @@ var __vue_render__$6 = function __vue_render__() {
       "sortable": _vm.sortable,
       "typed-columns": _vm.typedColumns,
       "getClasses": _vm.getClasses,
-      "searchEnabled": _vm.searchEnabled
+      "searchEnabled": _vm.searchEnabled,
+      "children-visibility-toggle": _vm.groupOptions.childrenVisibilityToggle
     },
     on: {
       "on-toggle-select-all": _vm.toggleSelectAll,
@@ -14672,7 +14705,13 @@ var __vue_render__$6 = function __vue_render__() {
         "collect-formatted": _vm.collectFormatted,
         "formatted-row": _vm.formattedRow,
         "get-classes": _vm.getClasses,
-        "full-colspan": _vm.fullColspan
+        "full-colspan": _vm.fullColspan,
+        "children-visibility-toggle": _vm.groupOptions.childrenVisibilityToggle
+      },
+      on: {
+        "childrenVisibilityToggled": function childrenVisibilityToggled($event) {
+          return _vm.childrenVisibilityToggled(index);
+        }
       },
       scopedSlots: _vm._u([{
         key: "table-header-row",
@@ -14686,6 +14725,12 @@ var __vue_render__$6 = function __vue_render__() {
       }], null, true)
     }) : _vm._e(), _vm._v(" "), _vm._l(headerRow.children, function (row, index) {
       return _c('tr', {
+        directives: [{
+          name: "show",
+          rawName: "v-show",
+          value: !_vm.groupOptions.childrenVisibilityToggle || _vm.groupOptions.childrenVisibilityToggle && headerRow.childrenVisible,
+          expression: "!groupOptions.childrenVisibilityToggle || (groupOptions.childrenVisibilityToggle && headerRow.childrenVisible)"
+        }],
         key: row.originalIndex,
         "class": _vm.getRowStyleClass(row),
         on: {
@@ -14705,7 +14750,7 @@ var __vue_render__$6 = function __vue_render__() {
             return _vm.onRowAuxClicked(row, index, $event);
           }
         }
-      }, [_vm.lineNumbers ? _c('th', {
+      }, [_vm.groupOptions.childrenVisibilityToggle ? _c('td') : _vm._e(), _vm._v(" "), _vm.lineNumbers ? _c('th', {
         staticClass: "line-numbers"
       }, [_vm._v("\n              " + _vm._s(_vm.getCurrentIndex(index)) + "\n            ")]) : _vm._e(), _vm._v(" "), _vm.selectable ? _c('th', {
         staticClass: "vgt-checkbox-col",
@@ -14751,7 +14796,13 @@ var __vue_render__$6 = function __vue_render__() {
         "collect-formatted": _vm.collectFormatted,
         "formatted-row": _vm.formattedRow,
         "get-classes": _vm.getClasses,
-        "full-colspan": _vm.fullColspan
+        "full-colspan": _vm.fullColspan,
+        "children-visibility-toggle": _vm.groupOptions.childrenVisibilityToggle
+      },
+      on: {
+        "childrenVisibilityToggled": function childrenVisibilityToggled($event) {
+          return _vm.childrenVisibilityToggled(index);
+        }
       },
       scopedSlots: _vm._u([{
         key: "table-header-row",

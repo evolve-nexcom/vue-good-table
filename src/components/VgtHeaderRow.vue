@@ -1,6 +1,15 @@
 <template>
 <tr>
   <th
+    class="vgt-row-header"
+    v-if="childrenVisibilityToggle">
+    <button
+      class="vgt-children-visibility-toggle"
+      @click="toggleChildrenVisibility">
+      {{headerRow.childrenVisible ? '-' : '+'}}
+    </button>
+  </th>
+  <th
     v-if="headerRow.mode === 'span'"
     class="vgt-left-align vgt-row-header"
     :colspan="fullColspan">
@@ -70,6 +79,9 @@ export default {
     fullColspan: {
       type: Number,
     },
+    childrenVisibilityToggle: {
+      type: Boolean
+    }
   },
   data() {
     return {
@@ -78,6 +90,9 @@ export default {
   computed: {
   },
   methods: {
+    toggleChildrenVisibility() {
+      this.$emit('childrenVisibilityToggled')
+    }
   },
   mounted() {
   },
