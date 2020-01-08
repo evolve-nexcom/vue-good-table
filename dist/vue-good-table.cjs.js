@@ -27,7 +27,7 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
 }
 
-function _toConsumableArray(arr) {
+function _toConsumableArray$1(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
 }
 
@@ -645,7 +645,7 @@ function identity(value) {
   return value;
 }
 
-var lodash_foreach = forEach;
+var lodash_foreach$1 = forEach;
 
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -13438,7 +13438,7 @@ var index = {
 
 var dataTypes = {};
 var coreDataTypes = index;
-lodash_foreach(Object.keys(coreDataTypes), function (key) {
+lodash_foreach$1(Object.keys(coreDataTypes), function (key) {
   var compName = key.replace(/^\.\//, '').replace(/\.js/, '');
   dataTypes[compName] = coreDataTypes[key]["default"];
 });
@@ -13679,8 +13679,8 @@ var script$6 = {
     },
     selectedPageRows: function selectedPageRows() {
       var selectedRows = [];
-      lodash_foreach(this.paginated, function (headerRow) {
-        lodash_foreach(headerRow.children, function (row) {
+      lodash_foreach$1(this.paginated, function (headerRow) {
+        lodash_foreach$1(headerRow.children, function (row) {
           if (row.vgtSelected) {
             selectedRows.push(row);
           }
@@ -13690,8 +13690,8 @@ var script$6 = {
     },
     selectedRows: function selectedRows() {
       var selectedRows = [];
-      lodash_foreach(this.processedRows, function (headerRow) {
-        lodash_foreach(headerRow.children, function (row) {
+      lodash_foreach$1(this.processedRows, function (headerRow) {
+        lodash_foreach$1(headerRow.children, function (row) {
           if (row.vgtSelected) {
             selectedRows.push(row);
           }
@@ -13731,15 +13731,19 @@ var script$6 = {
       return false;
     },
     totalRowCount: function totalRowCount() {
-      var total = 0;
-      lodash_foreach(this.processedRows, function (headerRow) {
-        total += headerRow.children ? headerRow.children.length : 0;
-      });
-      return total;
+      if (this.groupOptions.enabled) {
+        return this.processedRows.length;
+      } else {
+        var total = 0;
+        lodash_foreach$1(this.processedRows, function (headerRow) {
+          total += headerRow.children ? headerRow.children.length : 0;
+        });
+        return total;
+      }
     },
     totalPageRowCount: function totalPageRowCount() {
       var total = 0;
-      lodash_foreach(this.paginated, function (headerRow) {
+      lodash_foreach$1(this.paginated, function (headerRow) {
         total += headerRow.children ? headerRow.children.length : 0;
       });
       return total;
@@ -13793,12 +13797,12 @@ var script$6 = {
         // here also we need to de-construct and then
         // re-construct the rows.
         var allRows = [];
-        lodash_foreach(this.filteredRows, function (headerRow) {
-          allRows.push.apply(allRows, _toConsumableArray(headerRow.children));
+        lodash_foreach$1(this.filteredRows, function (headerRow) {
+          allRows.push.apply(allRows, _toConsumableArray$1(headerRow.children));
         });
         var filteredRows = [];
-        lodash_foreach(allRows, function (row) {
-          lodash_foreach(_this.columns, function (col) {
+        lodash_foreach$1(allRows, function (row) {
+          lodash_foreach$1(_this.columns, function (col) {
             // if col does not have search disabled,
             if (!col.globalSearchDisabled) {
               // if a search function is provided,
@@ -13831,7 +13835,7 @@ var script$6 = {
         // of rows
 
         computedRows = [];
-        lodash_foreach(this.filteredRows, function (headerRow) {
+        lodash_foreach$1(this.filteredRows, function (headerRow) {
           var i = headerRow.vgt_header_id;
           var children = lodash_filter(filteredRows, ['vgt_id', i]);
 
@@ -13891,13 +13895,21 @@ var script$6 = {
 
 
       var paginatedRows = [];
-      lodash_foreach(this.processedRows, function (childRows) {
+      lodash_foreach$1(this.processedRows, function (childRows) {
         var _paginatedRows;
 
-        (_paginatedRows = paginatedRows).push.apply(_paginatedRows, _toConsumableArray(childRows.children));
+        (_paginatedRows = paginatedRows).push.apply(_paginatedRows, _toConsumableArray$1(childRows.children));
       });
 
       if (this.paginate) {
+        if (this.groupOptions.enabled) {
+          // group pagination
+          paginatedRows = [];
+          lodash_foreach$1(this.processedRows, function (parentRows) {
+            paginatedRows.push(parentRows);
+          });
+        }
+
         var pageStart = (this.currentPage - 1) * this.currentPerPage; // in case of filtering we might be on a page that is
         // not relevant anymore
         // also, if setting to all, current page will not be valid
@@ -13915,11 +13927,24 @@ var script$6 = {
         }
 
         paginatedRows = paginatedRows.slice(pageStart, pageEnd);
+
+        if (this.groupOptions.enabled) {
+          // group pagination
+          var tempRows = paginatedRows;
+          paginatedRows = [];
+          lodash_foreach(tempRows, function (parentRows) {
+            var _paginatedRows2;
+
+            console.log(parentRows);
+
+            (_paginatedRows2 = paginatedRows).push.apply(_paginatedRows2, _toConsumableArray(parentRows.children));
+          });
+        }
       } // reconstruct paginated rows here
 
 
       var reconstructedRows = [];
-      lodash_foreach(this.processedRows, function (headerRow) {
+      lodash_foreach$1(this.processedRows, function (headerRow) {
         var i = headerRow.vgt_header_id;
         var children = lodash_filter(paginatedRows, ['vgt_id', i]);
 
@@ -13947,8 +13972,8 @@ var script$6 = {
 
 
       var index = 0;
-      lodash_foreach(nestedRows, function (headerRow, i) {
-        lodash_foreach(headerRow.children, function (row, j) {
+      lodash_foreach$1(nestedRows, function (headerRow, i) {
+        lodash_foreach$1(headerRow.children, function (row, j) {
           row.originalIndex = index++;
         });
       });
@@ -14005,8 +14030,8 @@ var script$6 = {
       var _this2 = this;
 
       var rows = this.selectAllByPage && !forceAll ? this.paginated : this.filteredRows;
-      lodash_foreach(rows, function (headerRow, i) {
-        lodash_foreach(headerRow.children, function (row, j) {
+      lodash_foreach$1(rows, function (headerRow, i) {
+        lodash_foreach$1(headerRow.children, function (row, j) {
           _this2.$set(row, 'vgtSelected', false);
         });
       });
@@ -14021,8 +14046,8 @@ var script$6 = {
       }
 
       var rows = this.selectAllByPage ? this.paginated : this.filteredRows;
-      lodash_foreach(rows, function (headerRow) {
-        lodash_foreach(headerRow.children, function (row) {
+      lodash_foreach$1(rows, function (headerRow) {
+        lodash_foreach$1(headerRow.children, function (row) {
           _this3.$set(row, 'vgtSelected', true);
         });
       });
@@ -14298,7 +14323,7 @@ var script$6 = {
           var col = _this4.typedColumns[i];
 
           if (_this4.columnFilters[col.field]) {
-            computedRows = lodash_foreach(computedRows, function (headerRow) {
+            computedRows = lodash_foreach$1(computedRows, function (headerRow) {
               var newChildren = headerRow.children.filter(function (row) {
                 // If column has a custom filter, use that.
                 if (col.filterOptions && typeof col.filterOptions.filterFn === 'function') {
@@ -14343,9 +14368,9 @@ var script$6 = {
       return classes;
     },
     handleGrouped: function handleGrouped(originalRows) {
-      lodash_foreach(originalRows, function (headerRow, i) {
+      lodash_foreach$1(originalRows, function (headerRow, i) {
         headerRow.vgt_header_id = i;
-        lodash_foreach(headerRow.children, function (childRow) {
+        lodash_foreach$1(headerRow.children, function (childRow) {
           childRow.vgt_id = i;
         });
       });

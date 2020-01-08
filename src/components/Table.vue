@@ -648,11 +648,15 @@ export default {
       return false;
     },
     totalRowCount() {
-      let total = 0;
-      each(this.processedRows, (headerRow) => {
-        total += headerRow.children ? headerRow.children.length : 0;
-      });
-      return total;
+      if (this.groupOptions.enabled) {
+          return this.processedRows.length
+      } else {
+        let total = 0;
+        each(this.processedRows, (headerRow) => {
+          total += headerRow.children ? headerRow.children.length : 0;
+        });
+        return total;
+      }
     },
     totalPageRowCount() {
       let total = 0;
@@ -828,6 +832,13 @@ export default {
       });
 
       if (this.paginate) {
+        if (this.groupOptions.enabled) {
+          // group pagination
+          paginatedRows = [];
+          each(this.processedRows, (parentRows) => {
+            paginatedRows.push(parentRows);
+          });
+        }
         let pageStart = (this.currentPage - 1) * this.currentPerPage;
 
         // in case of filtering we might be on a page that is
@@ -847,6 +858,19 @@ export default {
         }
 
         paginatedRows = paginatedRows.slice(pageStart, pageEnd);
+
+        if (this.groupOptions.enabled) {
+          // group pagination
+          var tempRows = paginatedRows;
+          paginatedRows = [];
+          lodash_foreach(tempRows, function (parentRows) {
+            var _paginatedRows2;
+
+            console.log(parentRows);
+
+            (_paginatedRows2 = paginatedRows).push.apply(_paginatedRows2, _toConsumableArray(parentRows.children));
+          });
+        }
       }
       // reconstruct paginated rows here
       const reconstructedRows = [];
