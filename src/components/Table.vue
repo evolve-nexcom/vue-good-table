@@ -142,6 +142,9 @@
             </template>
           </thead>
 
+          <slot name="tbody-before">
+          </slot>
+
           <!-- Table body starts here -->
           <tbody
             v-for="(headerRow, index) in paginated"
@@ -263,6 +266,8 @@
               </td>
             </tr>
           </tbody>
+          <slot name="tbody-after">
+          </slot>
         </table>
       </div>
       <div v-if="hasFooterSlot" class="vgt-wrap__actions-footer">

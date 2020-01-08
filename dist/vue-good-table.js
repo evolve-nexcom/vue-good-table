@@ -14662,7 +14662,7 @@
           })];
         }
       }], null, true)
-    }), _vm._v(" "), _vm._l(_vm.paginated, function (headerRow, index) {
+    }), _vm._v(" "), _vm._t("tbody-before"), _vm._v(" "), _vm._l(_vm.paginated, function (headerRow, index) {
       return _c('tbody', {
         key: index
       }, [_vm.groupHeaderOnTop ? _c('vgt-header-row', {
@@ -14772,7 +14772,7 @@
       }
     }, [_vm._t("emptystate", [_c('div', {
       staticClass: "vgt-center-align vgt-text-disabled"
-    }, [_vm._v("\n                  No data for table\n                ")])])], 2)])]) : _vm._e()], 2)]), _vm._v(" "), _vm.hasFooterSlot ? _c('div', {
+    }, [_vm._v("\n                  No data for table\n                ")])])], 2)])]) : _vm._e(), _vm._v(" "), _vm._t("tbody-after")], 2)]), _vm._v(" "), _vm.hasFooterSlot ? _c('div', {
       staticClass: "vgt-wrap__actions-footer"
     }, [_vm._t("table-actions-bottom")], 2) : _vm._e(), _vm._v(" "), _vm.paginate && _vm.paginateOnBottom ? _vm._t("pagination-bottom", [_c('vgt-pagination', {
       ref: "paginationBottom",
