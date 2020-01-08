@@ -1,7 +1,7 @@
 <template>
 <tr>
   <th
-    class="vgt-row-header"
+    class="vgt-row-header vgt-row-header-toggle"
     v-if="childrenVisibilityToggle">
     <button
       class="vgt-children-visibility-toggle"

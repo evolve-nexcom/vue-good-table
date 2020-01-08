@@ -8688,7 +8688,7 @@
     var _c = _vm._self._c || _h;
 
     return _c('tr', [_vm.childrenVisibilityToggle ? _c('th', {
-      staticClass: "vgt-row-header"
+      staticClass: "vgt-row-header vgt-row-header-toggle"
     }, [_c('button', {
       staticClass: "vgt-children-visibility-toggle",
       on: {
